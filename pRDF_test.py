@@ -131,12 +131,26 @@ def pRDF(traj_file,coor_file,index_file,solute_index,dmax=20):
         U=MDAnalysis.Universe(coor_file)
 
     GR=numpy.zeros((100),dtype=numpy.float64)
-    Data_file=open("datafile.xvg",'w')
+    EXIST_NUM = 0
+    if os.path.isfile("datafile.xvg"):
+        Data_file = open("datafile.xvg",'r+')
+        lines = Data_file.readlines()
+        EXIST_NUM = len(lines)
+        try:
+            last_line = lines[-1].split()
+            for x in range(100):
+                GR[x] = float(last_line[x])*EXIST_NUM
+        except:
+            pass
+    else:
+        Data_file=open("datafile.xvg",'w')
     #step 1 
     # Get the center of the solute. 
     for ts in U.trajectory:
 
         print "Checking frame number: %d" %(ts.frame)
+        if ts.frame < EXIST_NUM +1:
+            continue
         solute_atoms = dict()
         
         coor_x=0.0
@@ -203,7 +217,7 @@ def pRDF(traj_file,coor_file,index_file,solute_index,dmax=20):
         # print X_min,X_max
 
         # bin   = dmax *2.0 / nbins
-        bin = 0.8
+        bin = 1.0
         x_bins = int((X_max - X_min) /bin) +1
         y_bins = int((Y_max - Y_min) /bin) +1
         z_bins = int((Z_max - Z_min) /bin) +1 
@@ -289,7 +303,7 @@ def pRDF(traj_file,coor_file,index_file,solute_index,dmax=20):
         temp1     =list() #A list used to contain grid_dist.
         temp2     =list() #A list used to contain sol number for each grad.
  
-        TOTAL_ATOMS = 0
+        # TOTAL_ATOMS = 0
         for i in solute_list:
             try:
                 temp_grids=solute_contain_grids[i]
@@ -326,8 +340,8 @@ def pRDF(traj_file,coor_file,index_file,solute_index,dmax=20):
         # print rdf_atom
         # print unit_conc
         #print rdf_atom
-        if sum(rdf_atom) > 0:
-            TOTAL_ATOMS += 1
+        # if sum(rdf_atom) > 0:
+        #     TOTAL_ATOMS += 1
         rdf_atom=numpy.array(rdf_atom) / unit_conc
 
         # sys.exit()
@@ -346,9 +360,10 @@ def pRDF(traj_file,coor_file,index_file,solute_index,dmax=20):
         for i in range(100):
             Data_file.write("%12.4f" %y_label[i])
         Data_file.write("\n")
+        Data_file.flush()
         
 
-    GR = GR / TOTAL_ATOMS / U.trajectory.numframes
+    GR = GR / U.trajectory.numframes
     Data_file.close()
 #   print TOTAL_ATOMS
 #        print len(solute_index)
