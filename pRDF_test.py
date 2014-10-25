@@ -18,7 +18,7 @@ import time as Time
 import matplotlib.pyplot as plt
 
 
-def Min_dist(solute_atoms,solu_l,solv_coor,coor_list,R_solute):
+def Min_dist(solute_atoms,solu_l,solv_coor,coor_list,R_solute,dmax=10):
     '''
     atom_l: A full atom list.
     solu_l: A solute atom index list.
@@ -31,33 +31,37 @@ def Min_dist(solute_atoms,solu_l,solv_coor,coor_list,R_solute):
     if _test_1 > R_solute:
         return 0,0
 
-    dist_temp=[[abs(solute_atoms[i].atom_coor_x -solv_coor[0]),\
-    abs(solute_atoms[i].atom_coor_y - solv_coor[1]),
-    abs(solute_atoms[i].atom_coor_z - solv_coor[2])] for i in solu_l]
+    # dist_temp=[[abs(solute_atoms[i].atom_coor_x -solv_coor[0]),\
+    # abs(solute_atoms[i].atom_coor_y - solv_coor[1]),
+    # abs(solute_atoms[i].atom_coor_z - solv_coor[2])] for i in solu_l]
 
     # print dist_temp
 
     # min_dist  =min(dist_temp)
     # min_index =solu_l[dist_temp.index(min_dist)]
-    min_dist = (coor_list[0]-solv_coor[0])**2 \
-    + (coor_list[1] - solv_coor[1])**2 \
-    + (coor_list[2] - solv_coor[2])**2
-    min_dist = math.sqrt(min_dist)
+    # min_dist = (coor_list[0]-solv_coor[0])**2 \
+    # + (coor_list[1] - solv_coor[1])**2 \
+    # + (coor_list[2] - solv_coor[2])**2
+    min_dist = math.sqrt(_test_1)
 
     min_index =0
     # print min_dist
     # print solu_l
-    for i in range(len(solu_l)):
-        if dist_temp[i][0] < min_dist and dist_temp[i][1] < min_dist and dist_temp[i][2] < min_dist:
-            tmp = math.sqrt((dist_temp[i][0])**2 + (dist_temp[i][1])**2 + (dist_temp[i][2])**2)
-            if tmp < min_dist:
-                min_dist = tmp
-                min_index = i
+    for i in solu_l:
+        _tmp_x=abs(solute_atoms[i].atom_coor_x -solv_coor[0])
+        if   _tmp_x > dmax or _tmp_x > min_dist:
+            continue
+        _tmp_y=abs(solute_atoms[i].atom_coor_y -solv_coor[1])    
+        if _tmp_y > dmax or _tmp_y > min_dist:
+            continue
+        _tmp_z=abs(solute_atoms[i].atom_coor_z -solv_coor[2])    
+        if _tmp_z > dmax or _tmp_z > min_dist:
+            continue
+        tmp = math.sqrt((_tmp_x)**2 + (_tmp_y)**2 + (_tmp_z)**2)
+        if tmp < min_dist:
+            min_dist = tmp
+            min_index = i
                 # print min_dist, min_index
-            else:
-                pass
-        else:
-            pass
     # if min_dist < 1:
         # print min_dist,min_index
     return min_dist,min_index
@@ -245,7 +249,7 @@ def pRDF(traj_file,coor_file,index_file,solute_index,dmax=20):
             if min_index == 0:
                 continue
             # _gauss_value = min_dist
-            if i % 300 ==0:
+            if i % 10 ==0:
                 NOW_TIME=Time.time()
                 BIN_TIME=NOW_TIME-START_TIME
                 sys.stderr.write("grid ID %10d, time used: %6.2f s\r" %(i,BIN_TIME))
