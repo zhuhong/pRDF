@@ -1,15 +1,17 @@
 pRDF
 ====
 
-This is is a program designed for calculating proximal rdf of solvent by using the format of gromacs.
+A program designed to calculate the proximal radius distribution function (pRDF) of solvent by using the trajectory of gromacs.
 
-Dependency:
+Dependency
 -----------
 xdrfile from gromacs.org
 
-Usage:
+Usage
 -------
 pRDF coor_file traj_file index_file data_file
 
+Copyright
+----------
 Written by Zhu H. VERSION 1.1.0
 
