@@ -10,6 +10,7 @@ first version 1.0.0, finished at 2014.10.25.
 #include <cmath>
 #include <utility>
 #include <vector>
+#include <map>
 #include <iomanip>
 #include <stdlib.h>
 
@@ -574,11 +575,11 @@ int main(int argc,char * argv[])
 
 	switch(argc)
 	{
-		case 5:
+		case 4:
 			coor_file = argv[1];
 			traj_file = argv[2];
 			index_file = argv[3];
-			solute_index = atoi(argv[4]);
+			// solute_index = atoi(argv[4]);
 			pRDF(traj_file,coor_file,index_file,1.0);
 			break;
 
