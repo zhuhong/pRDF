@@ -1,5 +1,8 @@
 /*
 first version 1.0.0, finished at 2014.10.25.
+version 1.1.0. update 10.26.
+	- delete pdb.h, choosinng solvent and solute from input.
+	- renew the args.
 */
 
 
@@ -162,7 +165,7 @@ vector<float> hist(vector<float> value_list,vector<int> number_list,float min_va
 	return numb_list;
 }
 
-void pRDF(char * traj_file,char * coor_file,char * index_file,int dmax)
+void pRDF(char * traj_file,char * coor_file,char * index_file, char * data_file, int dmax)
 {
 
 	// map<int,atom> atom_list    =read_pdb_to_atom(coor_file);
@@ -185,7 +188,7 @@ void pRDF(char * traj_file,char * coor_file,char * index_file,int dmax)
 		GR[i] = 0.0;
 	}
 	int FRAMES = 0;
-	ofstream Data_file("datafile.xvg");
+	ofstream Data_file(data_file);
 
 
 	int natoms,step;
@@ -570,17 +573,17 @@ int main(int argc,char * argv[])
 	char * coor_file;
 	char * traj_file;
 	char * index_file;
-	int solute_index;
+	char * data_file;
 
 
 	switch(argc)
 	{
-		case 4:
+		case 5:
 			coor_file = argv[1];
 			traj_file = argv[2];
 			index_file = argv[3];
-			// solute_index = atoi(argv[4]);
-			pRDF(traj_file,coor_file,index_file,1.0);
+			data_file = argv[4];
+			pRDF(traj_file,coor_file,index_file,data_file,1.0);
 			break;
 
 		case 2:
@@ -601,7 +604,7 @@ void Print_usage()
 	cout<<"This is is a program designed for calculating proximal rdf of solvent."<<endl;
 	cout<<endl;
 	cout<<"------------------------------------------------"<<endl;
-	cout << "Usage: pRDF coor_file traj_file index_file solute_index"<< endl;
+	cout << "Usage: pRDF coor_file traj_file index_file data_file"<< endl;
 	cout<<"------------------------------------------------"<<endl;
 	cout<<"Written by Zhu H. VERSION 1.0.0"<<endl;
 	cout<<endl;
