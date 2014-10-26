@@ -15,7 +15,7 @@ first version 1.0.0, finished at 2014.10.25.
 
 #include "string_operate.h"
 #include "read_ndx.h"
-#include "pdb.h"
+// #include "pdb.h"
 // #include "my_math.h"
 
 using namespace std;
@@ -108,25 +108,25 @@ vector< pair<float,int> > Sort_dist(rvec *x,vector<int> solu_l,float * grid,floa
 
 
 
-vector<int> Get_solvent_list(map<int, atom> atom_list)
-{
-	vector<int> solvent_list ;
-	map<int,atom>::iterator it = atom_list.begin(); 
-	for (;it!=atom_list.end(); ++it)
-	{
-		int i = it->first;
-		// cout << it-> second.residue_name<< it->second.atom_name;
-		if(strcmp(it->second.residue_name,"WAT") ==0 && strcmp(it->second.atom_name,"O")==0)
-		{
-			solvent_list.push_back(i);
-		}
-		else if(strcmp(it->second.residue_name,"SOL")==0 && strcmp(it->second.atom_name,"OW")==0)
-		{
-			solvent_list.push_back(i);
-		}
-	}
-	return solvent_list;
-}
+// vector<int> Get_solvent_list(map<int, atom> atom_list)
+// {
+// 	vector<int> solvent_list ;
+// 	map<int,atom>::iterator it = atom_list.begin(); 
+// 	for (;it!=atom_list.end(); ++it)
+// 	{
+// 		int i = it->first;
+// 		// cout << it-> second.residue_name<< it->second.atom_name;
+// 		if(strcmp(it->second.residue_name,"WAT") ==0 && strcmp(it->second.atom_name,"O")==0)
+// 		{
+// 			solvent_list.push_back(i);
+// 		}
+// 		else if(strcmp(it->second.residue_name,"SOL")==0 && strcmp(it->second.atom_name,"OW")==0)
+// 		{
+// 			solvent_list.push_back(i);
+// 		}
+// 	}
+// 	return solvent_list;
+// }
 
 vector<float> hist(vector<float> value_list,vector<int> number_list,float min_value,float max_value,int nbins)
 {
@@ -161,15 +161,21 @@ vector<float> hist(vector<float> value_list,vector<int> number_list,float min_va
 	return numb_list;
 }
 
-void pRDF(char * traj_file,char * coor_file,char * index_file,int solute_index,int dmax)
+void pRDF(char * traj_file,char * coor_file,char * index_file,int dmax)
 {
 
-	map<int,atom> atom_list    =read_pdb_to_atom(coor_file);
+	// map<int,atom> atom_list    =read_pdb_to_atom(coor_file);
+	int solute_index;
+	int solvent_index;
 	vector <Index_class> index_list   =Read_index_to_Inclass(index_file);
 	Print_Index(index_list);
+	cout << "Choosing solute:" ;
+	cin >> solute_index; 
 	vector<int> solute_list  =index_list[solute_index].group_list ;
-	cout << "Choosing Group: " << index_list[solute_index].group_name << endl;
-	vector<int> solvent_list =Get_solvent_list(atom_list);
+	cout << "Choosing solvent: " ;
+	cin >> solvent_index;
+	vector<int> solvent_list = index_list[solvent_index].group_list ;
+	// vector<int> solvent_list =Get_solvent_list(atom_list);
 	// cout<< solvent_list.size()<< endl;
 
 	float GR[100] ; //=numpy.zeros((100),dtype=numpy.float64)
@@ -573,7 +579,7 @@ int main(int argc,char * argv[])
 			traj_file = argv[2];
 			index_file = argv[3];
 			solute_index = atoi(argv[4]);
-			pRDF(traj_file,coor_file,index_file,solute_index,1.0);
+			pRDF(traj_file,coor_file,index_file,1.0);
 			break;
 
 		case 2:
