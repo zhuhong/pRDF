@@ -206,12 +206,6 @@ void pRDF(char * traj_file,char * coor_file,char * index_file,int solute_index,i
 
 		FRAMES += 1;
 		cout<< "reading frame: " << FRAMES << endl;
-		// for(int i=0;i< atom_list.size();i++)
-		// {
-		// 	atom_list[i+1].x = x[i][0]*10;
-		// 	atom_list[i+1].y = x[i][1]*10;
-		// 	atom_list[i+1].z = x[i][2]*10;
-		// }
 
 		// solute_atoms = dict()
 		float coor_center[3];
