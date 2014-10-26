@@ -204,11 +204,11 @@ void pRDF(char * traj_file,char * coor_file,char * index_file, char * data_file,
 	while(1)
 	{
 		read_return=read_xtc(xtc,natoms,&step,&time_temp,box,x,&p);
-		if(step%100000==0)
-		{
+		// if(step%100000==0)
+		// {
 
-			cout<<"Reading frame"<<"\t"<<step<<" time "<<time_temp<<endl;
-		}
+		// 	cout<<"Reading frame"<<"\t"<<step<<" time "<<time_temp<<endl;
+		// }
 		if(read_return!=0)
 		{
 			break;
