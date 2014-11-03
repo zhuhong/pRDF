@@ -355,7 +355,6 @@ void pRDF(char * traj_file,char * coor_file,char * index_file, char * data_file,
 
 					// cout<<endl;
 
-
 					for (int _ii=0; _ii<3; _ii ++)
 					{
 						for (int _jj=0; _jj< 3; _jj ++)
